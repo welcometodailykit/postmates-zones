@@ -24,7 +24,7 @@ app.get('/zones', function(req, res) {
       res.send(info);
     }
   }
-  
+
   request(options, callback);
 
 });

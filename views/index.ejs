@@ -24,7 +24,7 @@
     L.mapbox.accessToken = "[your Mapbox token]";
 
     // Make the map object
-    var map = L.mapbox.map("map", "examples.xqwfusor")
+    var map = L.mapbox.map("map", "mapbox.light")
       .setView([40.76, -73.95], 12)
       .addControl(L.mapbox.geocoderControl('mapbox.places'));
 
@@ -33,16 +33,14 @@
 
     var featureLayer = L.mapbox.featureLayer()
       .loadURL('/zones')
-      /*
-      .on('ready', function(e) {
-        this.eachLayer(function(layer) {
-          console.log(layer.feature);
+      .on('ready', function(e){
+        this.setStyle({
+          color: '#0077AE',
+          weight: 3,
+          fillColor: '#4C9FC6'
         });
       })
-      */
       .addTo(map);
-
-    // var zones = L.mapbox.featureLayer().addTo(map);
 
     function setActive(el) {
       var siblings = listings.getElementsByTagName('li');
@@ -65,8 +63,6 @@
       link.href = '#';
       link.className = 'title';
       link.innerHTML = zone_name;
-
-      console.log(map_center);
 
       link.onclick = function() {
         setActive(listing);
