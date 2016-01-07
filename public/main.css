@@ -24,3 +24,6 @@ a {
   -moz-box-sizing:border-box;
   box-sizing:border-box;
 }
+h2 {
+  margin: 0;
+}
