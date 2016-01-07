@@ -2,7 +2,7 @@
 
 A sample Node.js app that displays the Postmates zones on a map.
 
-![Screenshot](/public/postmates-zones-screenshot.png)
+![Screenshot](/public/ss.png)
 
 
 ## Installation
