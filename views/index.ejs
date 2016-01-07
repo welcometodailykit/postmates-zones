@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A few polygons</title>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/v2.2.3/mapbox.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox.js/v2.2.3/mapbox.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css" />
+    <link href="main.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.0.2/leaflet-pip.js"></script>
+
+  </head>
+<body>
+  <div class="sidebar pad2">
+    <h2>PM Zones</h2>
+    <ul id="listings" class="listings"></ul>
+  </div>
+
+  <div id="map" class="map"></div>
+
+  <script type="text/javascript">
+    L.mapbox.accessToken = "[your Mapbox token]";
+
+    // Make the map object
+    var map = L.mapbox.map("map", "examples.xqwfusor")
+      .setView([40.76, -73.95], 12)
+      .addControl(L.mapbox.geocoderControl('mapbox.places'));
+
+    // Grab the list on the side and create a new layer on the map
+    var listings = document.getElementById('listings');
+
+    var featureLayer = L.mapbox.featureLayer()
+      .loadURL('/zones')
+      /*
+      .on('ready', function(e) {
+        this.eachLayer(function(layer) {
+          console.log(layer.feature);
+        });
+      })
+      */
+      .addTo(map);
+
+    // var zones = L.mapbox.featureLayer().addTo(map);
+
+    function setActive(el) {
+      var siblings = listings.getElementsByTagName('li');
+      for (var i = 0; i < siblings.length; i++) {
+        siblings[i].className = siblings[i].className
+        .replace(/active/, '').replace(/\s\s*$/, '');
+      }
+
+        el.className += ' active';
+    }
+
+    function getZones(data) {
+      var zone_name = data.properties.zone_name;
+      var map_center = data.features[1].geometry.coordinates.reverse();
+      var zoom_level = 11
+
+      // Create some HTML from the GeoJSON
+      var listing = listings.appendChild(document.createElement('li'));
+      var link = listing.appendChild(document.createElement('a'));
+      link.href = '#';
+      link.className = 'title';
+      link.innerHTML = zone_name;
+
+      console.log(map_center);
+
+      link.onclick = function() {
+        setActive(listing);
+        map.setView(map_center, zoom_level);
+        return false;
+      };
+    }
+
+    $.getJSON('/zones', function(data) {
+      for (i=0;i<data.length;i++) {
+        getZones(data[i]);
+      }
+    });
+
+  </script>
+</body>
+</html>
