@@ -35,3 +35,7 @@ This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` en
 ## Docs
 
 Read more on the [Postmates Developer Docs](https://postmates.com/developer/docs/endpoints#get_zones).
+
+## Live Demo
+
+You can see a working version of this on Heroku: [http://pmzones.herokuapp.com/](http://pmzones.herokuapp.com/)
