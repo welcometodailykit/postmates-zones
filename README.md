@@ -31,3 +31,7 @@ Run locally:
 Open http://localhost:5000
 
 This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` environmental variable with `heroku config:add POSTMATES_AUTH='Basic [your auth token]'`.
+
+## Docs
+
+Read more on the [Postmates Developer Docs](https://postmates.com/developer/docs/endpoints#get_zones).
