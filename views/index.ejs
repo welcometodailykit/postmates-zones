@@ -24,9 +24,23 @@
     L.mapbox.accessToken = "[your Mapbox token]";
 
     // Make the map object
-    var map = L.mapbox.map("map", "mapbox.light")
+    var map;
+    map = L.mapbox.map("map", "mapbox.light")
       .setView([40.76, -73.95], 12)
-      .addControl(L.mapbox.geocoderControl('mapbox.places'));
+      .addControl(
+        L.mapbox.geocoderControl('mapbox.places')
+        .on('select', function(e) {
+          coords = e.feature.geometry.coordinates;
+          var marker = L.marker([coords[1], coords[0]], {
+            icon: L.mapbox.marker.icon({
+              'marker-size': 'large',
+              'marker-symbol': 'heart',
+              'marker-color': '#C2C7CA'
+            })
+          });
+          marker.addTo(map);
+        })
+      );
 
     // Grab the list on the side and create a new layer on the map
     var listings = document.getElementById('listings');
