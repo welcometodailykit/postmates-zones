@@ -25,9 +25,17 @@ a {
   box-sizing:border-box;
 }
 h2 {
-  margin: 0;
+  margin: 0 0 40px;
 }
 
 section {
   margin: 0 0 40px;
+}
+
+.listings .active, .listings li:active, .list-group-item.active:hover {
+  background-color: #B2D6E6;
+}
+
+.form-control {
+  height: 33px;
 }
