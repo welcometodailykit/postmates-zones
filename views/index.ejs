@@ -15,12 +15,27 @@
 <body>
   <div class="sidebar pad2">
     <h2>Postmates Delivery Zones</h2>
-    <ul id="listings" class="listings"></ul>
+
+    <section>
+      <h4>Zip code search</h4>
+      <form id="zip_search">
+        <input type="text" placeholder="Enter a zip" id="zip_input" />
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section>
+      <h4>Market list</h4>
+      <ul id="listings" class="listings"></ul>
+    </section>
+
+
   </div>
 
   <div id="map" class="map"></div>
 
   <script type="text/javascript">
+    const MASHAPE_KEY = '';
     L.mapbox.accessToken = "pk.eyJ1IjoibWFnZXIiLCJhIjoiY2lobWxvZXRpMG90ZXY1a2x4eG4wNGs1NyJ9.vEVHfV_K15rnm4_niRNHYw";
 
     // Make the map object
@@ -90,6 +105,39 @@
         getZones(data[i]);
       }
     });
+
+    $('#zip_search').submit(function(e) {
+      e.preventDefault();
+      var result = $('#zip_input').val();
+      get_zip(result);
+    });
+
+    function get_zip(q){
+      var base_url = 'https://vanitysoft-boundaries-io-v1.p.mashape.com/reaperfire/rest/v1/public/boundary';
+      var query_params = '?includepostal=true&limit=1&zipcode=';
+      var request_url = `${base_url}${query_params}${q}`;
+      console.log(request_url);
+
+      $.ajax({
+        url: request_url,
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function(request) {
+          request.setRequestHeader("X-Mashape-Key", MASHAPE_KEY);
+          request.setRequestHeader("Accept", "application/json");
+        },
+        success: function(e) {
+          add_zip(e);
+        },
+        error: function(e) {
+          console.log(e);
+        }
+      });
+    }
+
+    function add_zip(zip) {
+      L.mapbox.featureLayer().setGeoJSON(zip).addTo(map);
+    }
 
   </script>
 </body>
