@@ -35,7 +35,3 @@ section {
 .listings .active, .listings li:active, .list-group-item.active:hover {
   background-color: #B2D6E6;
 }
-
-.form-control {
-  height: 33px;
-}

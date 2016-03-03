@@ -4,6 +4,8 @@ A sample Node.js app that displays the Postmates zones on a map.
 
 ![Screenshot](/public/ss.png)
 
+Click on a city or search by zip code.
+
 
 ## Installation
 
@@ -39,3 +41,9 @@ Read more on the [Postmates Developer Docs](https://postmates.com/developer/docs
 ## Live Demo
 
 You can see a working version of this on Heroku: [http://pmzones.herokuapp.com/](http://pmzones.herokuapp.com/)
+
+## TODO
+
+* Remove zip codes when searching for a new one
+* Add label to zip code polygon
+* Rewrite in React & Redux

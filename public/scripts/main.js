@@ -1,3 +1,4 @@
+// See https://www.mapbox.com/help/rotate-access-token/
 const MAPBOX_TOKEN = "pk.eyJ1IjoibWFnZXIiLCJhIjoiY2lobWxvZXRpMG90ZXY1a2x4eG4wNGs1NyJ9.vEVHfV_K15rnm4_niRNHYw";
 L.mapbox.accessToken = MAPBOX_TOKEN;
 
@@ -97,9 +98,9 @@ function get_zip(q){
 }
 
 function center_map(q) {
-    var base_url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
-    var end_url = '.json?access_token=';
-    var request_url = `${base_url}${q}${end_url}${MAPBOX_TOKEN}`;
+    const BASE_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+    const END_URL = '.json?access_token=';
+    var request_url = `${BASE_URL}${q}${END_URL}${MAPBOX_TOKEN}`;
     var resp = $.getJSON(request_url, function(e) {
       var lon = e.features[0].center[0];
       var lat = e.features[0].center[1];
