@@ -28,9 +28,9 @@ Update your Mapbox token in [index.ejs](views/index.ejs#L24).
 
 Run locally:
 
-    node app.js
+    npm start
 
-Open http://localhost:5000
+Open http://localhost:3000
 
 This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` environmental variable with `heroku config:add POSTMATES_AUTH='Basic [your auth token]'`.
 
