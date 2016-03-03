@@ -36,7 +36,7 @@ Run locally:
 
 Open [http://localhost:3000](http://localhost:3000).
 
-This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` environmental variable with `heroku config:add POSTMATES_AUTH='Basic [your auth token]'`.
+This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` environmental variable with `heroku config:add POSTMATES_AUTH='Basic [your auth token]'`. Same with `MASHAPE_KEY`.
 
 ## Docs
 
