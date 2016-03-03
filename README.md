@@ -22,7 +22,11 @@ Update environmental variable with Postmates auth header. Base64-encode [your AP
 
     export POSTMATES_AUTH='Basic Y2YyZjJkNmQtYTM___SECRET___M2MwYWYzMTY1Og=='
 
-Update your Mapbox token in [index.ejs](views/index.ejs#L24).
+Sign up for a Mashape account and the [Boundaries.io API](https://market.mashape.com/vanitysoft/boundaries-io). Add your key:
+
+    export MASHAPE_KEY='0123456789ABCDEF'
+
+Update your Mapbox token in [index.ejs](views/index.ejs).
 
 ## Usage
 
@@ -30,7 +34,7 @@ Run locally:
 
     npm start
 
-Open http://localhost:3000
+Open [http://localhost:3000](http://localhost:3000).
 
 This can easily be deployed on Heroku. Make sure you add the `POSTMATES_AUTH` environmental variable with `heroku config:add POSTMATES_AUTH='Basic [your auth token]'`.
 
