@@ -4,6 +4,10 @@ import { reduxForm } from 'redux-form';
 import * as actions from '../actions';
 
 class AddressBox extends Component {
+    state = {
+        isLoading: false
+    };
+
     handleFormSubmit({ quotes }) {
         this.props.getQuotes({ quotes });
     }
@@ -33,6 +37,7 @@ class AddressBox extends Component {
                         </form>
                     </div>
                 </section>
+                { this.state.isLoading ? <Loading /> : null }
             </div>
         );
     }
