@@ -1,13 +1,46 @@
 var express = require('express');
 var app = express();
-
+var cors = require('cors');
+var bodyParser = require('body-parser');
 var request = require('request');
+var turf = require('turf');
+var zones = require('./zones.json');
+
 
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static('map'));
+app.use(cors());
+app.use(bodyParser.json({
+    type: '*/*'
+}));
+
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: 'AIzaSyATPzz_EleQdTUydOGCLo7rknh0qB5h9Cs',
+  formatter: null
+};
+
+var geocoder = NodeGeocoder(options);
+
+
+
+app.post('/addresses', function(req, res) {
+  var addresses = req.body.data;
+
+  Promise.all(addresses.map((addy) => isAddressInZone(addy)))
+    .then((results) => res.send(results));
+});
+
 
 app.get('/', function (req, res) {
   res.render('index');
+});
+
+app.get('/bulk', function (req, res) {
+  res.render('bulk');
 });
 
 app.get('/zones', function(req, res) {
@@ -49,6 +82,42 @@ app.get('/zips', function(req, res) {
   request(options, callback);
 
 });
+
+function getZonePolygons(zones) {
+    var zone_polygons = [];
+
+    for (var i = 0; i < zones.length; i++) {
+        var zone = turf.polygon(
+            zones[i]['features'][0]['geometry']['coordinates'][0]
+        );
+
+        zone_polygons.push(zone);
+    }
+
+    return zone_polygons;
+}
+
+function isAddressInZone(address) {
+    var polygons = getZonePolygons(zones);
+    var pointInPolygon = false;
+
+    return new Promise((resolve, _reject) => {
+        return geocoder.geocode(address, function(err, result) {
+            if (result.length) {
+                var point = turf.point(
+                    [result[0]['longitude'], result[0]['latitude']]
+                );
+
+                for (var i=0; i<polygons.length; i++) {
+                    if (turf.inside(point, polygons[i])) {
+                        pointInPolygon = true;
+                    };
+                }
+            }
+            resolve(pointInPolygon);
+        });
+    });
+}
 
 var server = app.listen(process.env.PORT || 3000, function () {
   var host = server.address().address;
