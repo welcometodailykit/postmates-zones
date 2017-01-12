@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'DIN-Next-LT-Pro-Regular';
+    src: url('../fonts/DIN-Next-LT-Pro-Regular.otf');
+}
+
+@font-face {
+    font-family: 'DIN-Next-LT-Pro-Bold';
+    src: url('../fonts/DIN-Next-LT-Pro-Bold.otf');
+}
+
+html, body {
+    background: #fff;
+    color: #36454F;
+    letter-spacing: -0.02em;
+    font-family: 'DIN-Next-LT-Pro-Regular', sans-serif;
+}
+
+textarea, .button {
+    font-family: 'DIN-Next-LT-Pro-Regular', sans-serif;
+}
+
+h1 {
+    text-transform: capitalize;
+    letter-spacing: -0.02em;
+}
+
+.section {
+    padding: 0 0 20px;
+}
+
+
+.label {
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.label:not(:last-child) {
+    margin: 0 0 10px;
+}
+
+
+.main {
+    margin: 3rem;
+}
+
+.textarea {
+    line-height: 1.6;
+    min-height: 300px;
+    margin: 0 0 20px;
+}
+
+.textarea:focus {
+    border-color: #0077AE;
+}
+
+.results {
+    margin-top: 50px;
+}
+
+.button.is-primary {
+    background-color: #0077AE;
+}
+
+.button.is-primary:hover, .button.is-primary:focus {
+    background-color: #006492;
+}
+
+.table thead th {
+    font-family: 'DIN-Next-LT-Pro-Bold', sans-serif;
+    border-bottom: 1px solid #dbdedf;
+    color: #36454F;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 11px;
+}
+
+.table tbody td {
+    color: #7a848b;
+}
