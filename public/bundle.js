@@ -30805,7 +30805,7 @@
 	                        _react2.default.createElement(
 	                            'h1',
 	                            { className: 'title is-1' },
-	                            'Postmates Address Validator'
+	                            'Postmates Zone Check'
 	                        )
 	                    )
 	                ),
@@ -30829,7 +30829,7 @@
 	                                _react2.default.createElement('textarea', _extends({}, quotes, {
 	                                    className: 'textarea',
 	                                    value: quotes.value || '',
-	                                    placeholder: 'Please limit each query to 100 lines or less' }))
+	                                    placeholder: 'Please limit each query to 1000 lines or less' }))
 	                            ),
 	                            _react2.default.createElement(
 	                                'button',
@@ -34208,7 +34208,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ROOT_URL = 'http://localhost:3000';
+	var ROOT_URL = 'http://zones.postmates.com';
 
 	function getQuotes(quotes) {
 	    // New array with a single key and a list of addresses
