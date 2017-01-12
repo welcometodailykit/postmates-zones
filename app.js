@@ -25,8 +25,6 @@ var options = {
 
 var geocoder = NodeGeocoder(options);
 
-
-
 app.post('/addresses', function(req, res) {
   var addresses = req.body.data;
 
