@@ -30821,7 +30821,7 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { className: 'label' },
-	                                'Enter a list of addresses, each on a new line:'
+	                                'Enter a list of addresses, each on a new line. Be sure to remove extra address information like suite/unit numbers and other "address 2" fields:'
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',

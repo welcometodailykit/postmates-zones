@@ -105,7 +105,7 @@ function isAddressInZone(address) {
 
     return new Promise((resolve, _reject) => {
         return geocoder.geocode(address, function(err, result) {
-            if (result.length) {
+            if (result && result.length) {
                 var point = turf.point(
                     [result[0]['longitude'], result[0]['latitude']]
                 );

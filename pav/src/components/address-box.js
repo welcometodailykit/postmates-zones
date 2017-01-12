@@ -25,7 +25,7 @@ class AddressBox extends Component {
                 <section className="section">
                     <div className="container">
                         <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
-                            <label className="label">Enter a list of addresses, each on a new line:</label>
+                            <label className="label">Enter a list of addresses, each on a new line. Be sure to remove extra address information like suite/unit numbers and other "address 2" fields:</label>
                             <p className="control">
                                 <textarea
                                     { ...quotes }
