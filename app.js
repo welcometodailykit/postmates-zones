@@ -8,7 +8,7 @@ var zones = require('./zones.json');
 
 
 app.set('view engine', 'ejs');
-app.use(express.static('map'));
+app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.json({
     type: '*/*'
@@ -37,6 +37,10 @@ app.post('/addresses', function(req, res) {
 
 app.get('/', function (req, res) {
   res.render('index');
+});
+
+app.get('/bulk', function (req, res) {
+  res.render('bulk');
 });
 
 app.get('/bulk', function (req, res) {
