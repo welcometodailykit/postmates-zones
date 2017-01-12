@@ -19,7 +19,7 @@ class AddressBox extends Component {
             <div className="address-box">
                 <section className="section heading">
                     <div className="container">
-                        <h1 className="title is-1">Postmates Address Validator</h1>
+                        <h1 className="title is-1">Postmates Zone Check</h1>
                     </div>
                 </section>
                 <section className="section">
@@ -31,7 +31,7 @@ class AddressBox extends Component {
                                     { ...quotes }
                                     className="textarea"
                                     value={ quotes.value || '' }
-                                    placeholder="Please limit each query to 100 lines or less" />
+                                    placeholder="Please limit each query to 1000 lines or less" />
                             </p>
                             <button className="button is-primary" type="submit">Validate</button>
                         </form>

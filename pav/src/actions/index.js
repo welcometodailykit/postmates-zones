@@ -3,7 +3,7 @@ import {
     GET_QUOTES
 } from './types';
 
-const ROOT_URL = 'http://localhost:3000';
+const ROOT_URL = 'http://zones.postmates.com';
 
 
 export function getQuotes(quotes) {
