@@ -2,3 +2,4 @@ node_modules
 keys.txt
 pav/*.log
 pav/.DS_Store
+yarn.lock

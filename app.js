@@ -1,11 +1,11 @@
-var express = require('express');
-var app = express();
-var cors = require('cors');
-var bodyParser = require('body-parser');
-var request = require('request');
-var turf = require('turf');
-var zones = require('./zones.json');
-
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const request = require('request');
+const turf = require('turf');
+const NodeGeocoder = require('node-geocoder');
+const zones = require('./zones.json');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -14,22 +14,23 @@ app.use(bodyParser.json({
     type: '*/*'
 }));
 
-var NodeGeocoder = require('node-geocoder');
-
-var options = {
+const options = {
   provider: 'google',
   httpAdapter: 'https',
   apiKey: process.env.GOOGLE_API_KEY || '',
   formatter: null
 };
 
-var geocoder = NodeGeocoder(options);
+const geocoder = NodeGeocoder(options);
 
 app.post('/addresses', function(req, res) {
-  var addresses = req.body.data;
+  const addresses = req.body.data;
+  const addressesInZone = addresses.map((address) => {
+     const formattedAddress = address.replace(/\s+/g, ' ');
+     return isAddressInZone(formattedAddress);
+  });
 
-  Promise.all(addresses.map((addy) => isAddressInZone(addy)))
-    .then((results) => res.send(results));
+  Promise.all(addressesInZone).then((results) => res.send(results));
 });
 
 
@@ -47,7 +48,7 @@ app.get('/bulk', function (req, res) {
 
 app.get('/zones', function(req, res) {
 
-  var options = {}
+  const options = {}
   options.url = 'https://api.postmates.com/v1/delivery_zones';
   options.headers = {
     Authorization: process.env.POSTMATES_AUTH
@@ -65,11 +66,11 @@ app.get('/zones', function(req, res) {
 
 app.get('/zips', function(req, res) {
 
-  var base_url = 'https://vanitysoft-boundaries-io-v1.p.mashape.com/reaperfire/rest/v1/public/boundary';
-  var query_params = '?includepostal=true&limit=1&zipcode=';
-  var zip = req.query.zip;
+  const base_url = 'https://vanitysoft-boundaries-io-v1.p.mashape.com/reaperfire/rest/v1/public/boundary';
+  const query_params = '?includepostal=true&limit=1&zipcode=';
+  const zip = req.query.zip;
 
-  var options = {}
+  const options = {}
   options.url = `${base_url}${query_params}${zip}`;
   options.headers = {
     'X-Mashape-Key': process.env.MASHAPE_KEY
@@ -77,7 +78,7 @@ app.get('/zips', function(req, res) {
 
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
-      var info = JSON.parse(body);
+      const info = JSON.parse(body);
       res.send(info);
     }
   }
@@ -86,44 +87,33 @@ app.get('/zips', function(req, res) {
 });
 
 function getZonePolygons(zones) {
-    var zone_polygons = [];
-
-    for (var i = 0; i < zones.length; i++) {
-        var zone = turf.polygon(
-            zones[i]['features'][0]['geometry']['coordinates'][0]
-        );
-
-        zone_polygons.push(zone);
-    }
-
-    return zone_polygons;
+    return zones.map((zone) => {
+        return turf.polygon(zone.features[0].geometry.coordinates[0]);
+    });
 }
 
 function isAddressInZone(address) {
-    var polygons = getZonePolygons(zones);
-    var pointInPolygon = false;
+    const polygons = getZonePolygons(zones);
 
     return new Promise((resolve, _reject) => {
-        return geocoder.geocode(address, function(err, result) {
+        return geocoder.geocode(address, (err, result) => {
+            let pointInPolygon = false;
             if (result && result.length) {
-                var point = turf.point(
+                const point = turf.point(
                     [result[0]['longitude'], result[0]['latitude']]
                 );
 
-                for (var i=0; i<polygons.length; i++) {
-                    if (turf.inside(point, polygons[i])) {
-                        pointInPolygon = true;
-                    };
-                }
+                pointInPolygon = polygons.some((polygon) =>
+                    turf.inside(point, polygon));
             }
             resolve(pointInPolygon);
         });
     });
 }
 
-var server = app.listen(process.env.PORT || 3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
+const server = app.listen(process.env.PORT || 3000, () => {
+  const host = server.address().address;
+  const port = server.address().port;
 
   console.log('Example app listening at http://%s:%s', host, port);
 });
