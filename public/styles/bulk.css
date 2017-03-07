@@ -77,3 +77,15 @@ h1 {
 .table tbody td {
     color: #7a848b;
 }
+
+.control.radio span {
+    margin: 0 15px 0 0;
+}
+
+.control.radio span label {
+    margin: 0 0 0 6px;
+}
+
+.control.radio span input {
+    margin: 0 0 0 5px;
+}

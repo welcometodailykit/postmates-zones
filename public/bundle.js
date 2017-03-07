@@ -30773,7 +30773,8 @@
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddressBox.__proto__ || Object.getPrototypeOf(AddressBox)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	            isLoading: false
+	            isLoading: false,
+	            mode: 'addresses'
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
@@ -30782,11 +30783,20 @@
 	        value: function handleFormSubmit(_ref2) {
 	            var quotes = _ref2.quotes;
 
-	            this.props.getQuotes({ quotes: quotes });
+	            this.props.getQuotes({ quotes: quotes }, this.state.mode);
+	        }
+	    }, {
+	        key: 'toggleMode',
+	        value: function toggleMode() {
+	            this.setState({
+	                mode: this.state.mode === 'addresses' ? 'coordinates' : 'addresses'
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            var _props = this.props,
 	                handleSubmit = _props.handleSubmit,
 	                submitting = _props.submitting,
@@ -30822,6 +30832,46 @@
 	                                'label',
 	                                { className: 'label' },
 	                                'Enter a list of addresses, each on a new line. Be sure to remove extra address information like suite/unit numbers and other "address 2" fields:'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'control radio' },
+	                                _react2.default.createElement(
+	                                    'span',
+	                                    null,
+	                                    _react2.default.createElement('input', {
+	                                        type: 'radio',
+	                                        name: 'mode',
+	                                        id: 'mode-addresses',
+	                                        value: 'addresses',
+	                                        checked: this.state.mode == 'addresses',
+	                                        onClick: function onClick() {
+	                                            return _this2.toggleMode();
+	                                        } }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: 'mode-addresses' },
+	                                        'Addresses'
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'span',
+	                                    null,
+	                                    _react2.default.createElement('input', {
+	                                        type: 'radio',
+	                                        name: 'mode',
+	                                        id: 'mode-coordinates',
+	                                        value: 'coordinates',
+	                                        checked: this.state.mode == 'coordinates',
+	                                        onClick: function onClick() {
+	                                            return _this2.toggleMode();
+	                                        } }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: 'mode-coordinates' },
+	                                        'Coordinates'
+	                                    )
+	                                )
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',
@@ -34208,11 +34258,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ROOT_URL = 'http://zones.postmates.com';
+	var ROOT_URL = 'http://localhost:3000';
 
-	function getQuotes(quotes) {
+	function getQuotes(quotes, mode) {
 	    // New array with a single key and a list of addresses
 	    var addresses = {
+	        mode: mode,
 	        data: quotes.quotes.split('\n')
 	    };
 

@@ -24,13 +24,20 @@ const options = {
 const geocoder = NodeGeocoder(options);
 
 app.post('/addresses', function(req, res) {
+  const mode = req.body.mode;
   const addresses = req.body.data;
-  const addressesInZone = addresses.map((address) => {
-     const formattedAddress = address.replace(/\s+/g, ' ');
-     return isAddressInZone(formattedAddress);
-  });
+  if (mode === 'addresses') {
+      const addressesInZone = addresses.map((address) => {
+         const formattedAddress = address.replace(/\s+/g, ' ');
+         return isAddressInZone(formattedAddress);
+      });
 
-  Promise.all(addressesInZone).then((results) => res.send(results));
+      Promise.all(addressesInZone).then((results) => res.send(results));
+  } else {
+      const coordinatesInZone = addresses.map((coord) => isCoordinateInZone(coord));
+
+      Promise.all(coordinatesInZone).then((results) => res.send(results));
+  }
 });
 
 
@@ -111,9 +118,28 @@ function isAddressInZone(address) {
     });
 }
 
+function isCoordinateInZone(coords) {
+    var polygons = getZonePolygons(zones);
+    var [ lat, lng ] = coords.split(',');
+    var pointInPolygon = false;
+
+    return new Promise((resolve, _reject) => {
+        var point = turf.point(lat, lng);
+
+        console.log(point);
+
+        for (var i=0; i<polygons.length; i++) {
+            if (turf.inside(point, polygons[i])) {
+                pointInPolygon = true;
+            };
+        }
+
+        resolve(pointInPolygon);
+    });
+}
+
 const server = app.listen(process.env.PORT || 3000, () => {
   const host = server.address().address;
   const port = server.address().port;
-
   console.log('Example app listening at http://%s:%s', host, port);
 });
