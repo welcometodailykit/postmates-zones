@@ -30758,6 +30758,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var MODES = {
+	    ADDRESSES: 'addresses',
+	    COORDINATES: 'coordinates'
+	};
+
 	var AddressBox = function (_Component) {
 	    _inherits(AddressBox, _Component);
 
@@ -30773,7 +30778,8 @@
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddressBox.__proto__ || Object.getPrototypeOf(AddressBox)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	            isLoading: false
+	            isLoading: false,
+	            mode: MODES.ADDRESSES
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
@@ -30782,11 +30788,20 @@
 	        value: function handleFormSubmit(_ref2) {
 	            var quotes = _ref2.quotes;
 
-	            this.props.getQuotes({ quotes: quotes });
+	            this.props.getQuotes({ quotes: quotes }, this.state.mode);
+	        }
+	    }, {
+	        key: 'toggleMode',
+	        value: function toggleMode() {
+	            this.setState({
+	                mode: this.state.mode === MODES.ADDRESSES ? MODES.COORDINATES : MODES.ADDRESSES
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            var _props = this.props,
 	                handleSubmit = _props.handleSubmit,
 	                submitting = _props.submitting,
@@ -30822,6 +30837,46 @@
 	                                'label',
 	                                { className: 'label' },
 	                                'Enter a list of addresses, each on a new line. Be sure to remove extra address information like suite/unit numbers and other "address 2" fields:'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'control radio' },
+	                                _react2.default.createElement(
+	                                    'span',
+	                                    null,
+	                                    _react2.default.createElement('input', {
+	                                        type: 'radio',
+	                                        name: 'mode',
+	                                        id: 'mode-addresses',
+	                                        value: 'addresses',
+	                                        checked: this.state.mode == MODES.ADDRESSES,
+	                                        onClick: function onClick() {
+	                                            return _this2.toggleMode();
+	                                        } }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: 'mode-addresses' },
+	                                        'Addresses'
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'span',
+	                                    null,
+	                                    _react2.default.createElement('input', {
+	                                        type: 'radio',
+	                                        name: 'mode',
+	                                        id: 'mode-coordinates',
+	                                        value: 'coordinates',
+	                                        checked: this.state.mode == MODES.COORDINATES,
+	                                        onClick: function onClick() {
+	                                            return _this2.toggleMode();
+	                                        } }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: 'mode-coordinates' },
+	                                        'Coordinates'
+	                                    )
+	                                )
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',
@@ -34210,9 +34265,10 @@
 
 	var ROOT_URL = 'http://zones.postmates.com';
 
-	function getQuotes(quotes) {
+	function getQuotes(quotes, mode) {
 	    // New array with a single key and a list of addresses
 	    var addresses = {
+	        mode: mode,
 	        data: quotes.quotes.split('\n')
 	    };
 
@@ -35632,7 +35688,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var COLUMNS = ['Address', 'In Zone?'];
+	var COLUMNS = ['Location', 'In Zone?'];
 
 	var Results = function (_Component) {
 	    _inherits(Results, _Component);

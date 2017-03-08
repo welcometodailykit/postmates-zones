@@ -6,9 +6,10 @@ import {
 const ROOT_URL = 'http://zones.postmates.com';
 
 
-export function getQuotes(quotes) {
+export function getQuotes(quotes, mode) {
     // New array with a single key and a list of addresses
     const addresses = {
+        mode,
         data: quotes.quotes.split('\n')
     };
 

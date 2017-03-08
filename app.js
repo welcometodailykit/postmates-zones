@@ -24,13 +24,28 @@ const options = {
 const geocoder = NodeGeocoder(options);
 
 app.post('/addresses', function(req, res) {
+  const mode = req.body.mode;
   const addresses = req.body.data;
-  const addressesInZone = addresses.map((address) => {
-     const formattedAddress = address.replace(/\s+/g, ' ');
-     return isAddressInZone(formattedAddress);
-  });
+  const MODES = {
+      ADDRESSES: 'addresses',
+      COORDINATES: 'coordinates'
+  };
+  if (mode === MODE.ADDRESSES) {
+      const addressesInZone = addresses.map((address) => {
+         const formattedAddress = address.replace(/\s+/g, ' ');
+         return isAddressInZone(formattedAddress);
+      });
 
-  Promise.all(addressesInZone).then((results) => res.send(results));
+      Promise.all(addressesInZone).then((results) => res.json(results));
+  } else if (mode === MODE.COORDINATES) {
+      const coordinatesInZone = addresses.map((coord) => isCoordinateInZone(coord));
+
+      Promise.all(coordinatesInZone).then((results) => res.json(results));
+  } else {
+      return res.json({
+          'message': 'Incorrect mode'
+      });
+  }
 });
 
 
@@ -57,7 +72,7 @@ app.get('/zones', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      res.send(info);
+      res.json(info);
     }
   }
   request(options, callback);
@@ -79,7 +94,7 @@ app.get('/zips', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       const info = JSON.parse(body);
-      res.send(info);
+      res.json(info);
     }
   }
   request(options, callback);
@@ -111,9 +126,21 @@ function isAddressInZone(address) {
     });
 }
 
+function isCoordinateInZone(coords) {
+    const polygons = getZonePolygons(zones);
+    const [ lat, lng ] = coords.split(',');
+
+    return new Promise((resolve, _reject) => {
+        const point = turf.point([parseFloat(lng), parseFloat(lat)]);
+        const pointInPolygon = polygons.some((polygon) =>
+            turf.inside(point, polygon));
+
+        resolve(pointInPolygon);
+    });
+}
+
 const server = app.listen(process.env.PORT || 3000, () => {
   const host = server.address().address;
   const port = server.address().port;
-
   console.log('Example app listening at http://%s:%s', host, port);
 });

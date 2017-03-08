@@ -3,13 +3,26 @@ import Loading from './loading';
 import { reduxForm } from 'redux-form';
 import * as actions from '../actions';
 
+const MODES = {
+    ADDRESSES: 'addresses',
+    COORDINATES: 'coordinates'
+};
+
 class AddressBox extends Component {
     state = {
-        isLoading: false
+        isLoading: false,
+        mode: MODES.ADDRESSES
     };
 
     handleFormSubmit({ quotes }) {
-        this.props.getQuotes({ quotes });
+        this.props.getQuotes({ quotes }, this.state.mode);
+    }
+
+    toggleMode() {
+        this.setState({
+            mode: this.state.mode === MODES.ADDRESSES ?
+                MODES.COORDINATES : MODES.ADDRESSES
+        });
     }
 
     render() {
@@ -26,6 +39,28 @@ class AddressBox extends Component {
                     <div className="container">
                         <form onSubmit={ handleSubmit(this.handleFormSubmit.bind(this)) }>
                             <label className="label">Enter a list of addresses, each on a new line. Be sure to remove extra address information like suite/unit numbers and other "address 2" fields:</label>
+                            <p className="control radio">
+                                <span>
+                                    <input
+                                        type="radio"
+                                        name="mode"
+                                        id="mode-addresses"
+                                        value="addresses"
+                                        checked={ this.state.mode == MODES.ADDRESSES }
+                                        onClick={ () => this.toggleMode() } />
+                                    <label htmlFor="mode-addresses">Addresses</label>
+                                </span>
+                                <span>
+                                    <input
+                                        type="radio"
+                                        name="mode"
+                                        id="mode-coordinates"
+                                        value="coordinates"
+                                        checked={ this.state.mode == MODES.COORDINATES }
+                                        onClick={ () => this.toggleMode() } />
+                                    <label htmlFor="mode-coordinates">Coordinates</label>
+                                </span>
+                            </p>
                             <p className="control">
                                 <textarea
                                     { ...quotes }
