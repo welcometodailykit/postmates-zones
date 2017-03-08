@@ -34258,7 +34258,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ROOT_URL = 'http://localhost:3000';
+	var ROOT_URL = 'http://zones.postmates.com';
 
 	function getQuotes(quotes, mode) {
 	    // New array with a single key and a list of addresses
@@ -35683,7 +35683,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var COLUMNS = ['Address', 'In Zone?'];
+	var COLUMNS = ['Location', 'In Zone?'];
 
 	var Results = function (_Component) {
 	    _inherits(Results, _Component);

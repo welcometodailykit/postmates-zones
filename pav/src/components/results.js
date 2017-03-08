@@ -3,7 +3,7 @@ import CSV from './csv';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const COLUMNS = ['Address', 'In Zone?'];
+const COLUMNS = ['Location', 'In Zone?'];
 
 class Results extends Component {
     renderQuotes() {

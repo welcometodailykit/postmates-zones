@@ -32,11 +32,11 @@ app.post('/addresses', function(req, res) {
          return isAddressInZone(formattedAddress);
       });
 
-      Promise.all(addressesInZone).then((results) => res.send(results));
+      Promise.all(addressesInZone).then((results) => res.json(results));
   } else {
       const coordinatesInZone = addresses.map((coord) => isCoordinateInZone(coord));
 
-      Promise.all(coordinatesInZone).then((results) => res.send(results));
+      Promise.all(coordinatesInZone).then((results) => res.json(results));
   }
 });
 
@@ -64,7 +64,7 @@ app.get('/zones', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      res.send(info);
+      res.json(info);
     }
   }
   request(options, callback);
@@ -86,7 +86,7 @@ app.get('/zips', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       const info = JSON.parse(body);
-      res.send(info);
+      res.json(info);
     }
   }
   request(options, callback);
@@ -119,20 +119,13 @@ function isAddressInZone(address) {
 }
 
 function isCoordinateInZone(coords) {
-    var polygons = getZonePolygons(zones);
-    var [ lat, lng ] = coords.split(',');
-    var pointInPolygon = false;
+    const polygons = getZonePolygons(zones);
+    const [ lat, lng ] = coords.split(',');
 
     return new Promise((resolve, _reject) => {
-        var point = turf.point(lat, lng);
-
-        console.log(point);
-
-        for (var i=0; i<polygons.length; i++) {
-            if (turf.inside(point, polygons[i])) {
-                pointInPolygon = true;
-            };
-        }
+        const point = turf.point([parseFloat(lng), parseFloat(lat)]);
+        const pointInPolygon = polygons.some((polygon) =>
+            turf.inside(point, polygon));
 
         resolve(pointInPolygon);
     });
