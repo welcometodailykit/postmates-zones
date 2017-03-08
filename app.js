@@ -26,17 +26,25 @@ const geocoder = NodeGeocoder(options);
 app.post('/addresses', function(req, res) {
   const mode = req.body.mode;
   const addresses = req.body.data;
-  if (mode === 'addresses') {
+  const MODES = {
+      ADDRESSES: 'addresses',
+      COORDINATES: 'coordinates'
+  };
+  if (mode === MODE.ADDRESSES) {
       const addressesInZone = addresses.map((address) => {
          const formattedAddress = address.replace(/\s+/g, ' ');
          return isAddressInZone(formattedAddress);
       });
 
       Promise.all(addressesInZone).then((results) => res.json(results));
-  } else {
+  } else if (mode === MODE.COORDINATES) {
       const coordinatesInZone = addresses.map((coord) => isCoordinateInZone(coord));
 
       Promise.all(coordinatesInZone).then((results) => res.json(results));
+  } else {
+      return res.json({
+          'message': 'Incorrect mode'
+      });
   }
 });
 
