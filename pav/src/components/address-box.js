@@ -22,7 +22,7 @@ class AddressBox extends Component {
         this.setState({
             mode: this.state.mode === MODES.ADDRESSES ?
                 MODES.COORDINATES : MODES.ADDRESSES
-        })
+        });
     }
 
     render() {

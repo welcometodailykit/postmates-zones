@@ -30758,6 +30758,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var MODES = {
+	    ADDRESSES: 'addresses',
+	    COORDINATES: 'coordinates'
+	};
+
 	var AddressBox = function (_Component) {
 	    _inherits(AddressBox, _Component);
 
@@ -30774,7 +30779,7 @@
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddressBox.__proto__ || Object.getPrototypeOf(AddressBox)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
 	            isLoading: false,
-	            mode: 'addresses'
+	            mode: MODES.ADDRESSES
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
@@ -30789,7 +30794,7 @@
 	        key: 'toggleMode',
 	        value: function toggleMode() {
 	            this.setState({
-	                mode: this.state.mode === 'addresses' ? 'coordinates' : 'addresses'
+	                mode: this.state.mode === MODES.ADDRESSES ? MODES.COORDINATES : MODES.ADDRESSES
 	            });
 	        }
 	    }, {
@@ -30844,7 +30849,7 @@
 	                                        name: 'mode',
 	                                        id: 'mode-addresses',
 	                                        value: 'addresses',
-	                                        checked: this.state.mode == 'addresses',
+	                                        checked: this.state.mode == MODES.ADDRESSES,
 	                                        onClick: function onClick() {
 	                                            return _this2.toggleMode();
 	                                        } }),
@@ -30862,7 +30867,7 @@
 	                                        name: 'mode',
 	                                        id: 'mode-coordinates',
 	                                        value: 'coordinates',
-	                                        checked: this.state.mode == 'coordinates',
+	                                        checked: this.state.mode == MODES.COORDINATES,
 	                                        onClick: function onClick() {
 	                                            return _this2.toggleMode();
 	                                        } }),
