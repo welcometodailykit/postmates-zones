@@ -30,14 +30,14 @@ app.post('/addresses', function(req, res) {
       ADDRESSES: 'addresses',
       COORDINATES: 'coordinates'
   };
-  if (mode === MODE.ADDRESSES) {
+  if (mode === MODES.ADDRESSES) {
       const addressesInZone = addresses.map((address) => {
          const formattedAddress = address.replace(/\s+/g, ' ');
          return isAddressInZone(formattedAddress);
       });
 
       Promise.all(addressesInZone).then((results) => res.json(results));
-  } else if (mode === MODE.COORDINATES) {
+  } else if (mode === MODES.COORDINATES) {
       const coordinatesInZone = addresses.map((coord) => isCoordinateInZone(coord));
 
       Promise.all(coordinatesInZone).then((results) => res.json(results));
