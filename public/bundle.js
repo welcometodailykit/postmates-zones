@@ -34296,7 +34296,8 @@
 	    for (var i = 0; i < names.length; i++) {
 	        var obj = {
 	            address: names[i],
-	            isInZone: values[i]
+	            isInZone: values[i]['pointInPolygon'],
+	            zoneName: values[i]['zoneName']
 	        };
 	        result.push(obj);
 	    }
@@ -35688,7 +35689,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var COLUMNS = ['Location', 'In Zone?'];
+	var COLUMNS = ['Location', 'In Zone?', 'Zone Name'];
 
 	var Results = function (_Component) {
 	    _inherits(Results, _Component);
@@ -35754,6 +35755,11 @@
 	                                    'td',
 	                                    null,
 	                                    quote.isInZone.toString()
+	                                ),
+	                                _react2.default.createElement(
+	                                    'td',
+	                                    null,
+	                                    quote.zoneName.toString()
 	                                )
 	                            );
 	                        })

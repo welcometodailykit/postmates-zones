@@ -3,7 +3,7 @@ import CSV from './csv';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const COLUMNS = ['Location', 'In Zone?'];
+const COLUMNS = ['Location', 'In Zone?', 'Zone Name'];
 
 class Results extends Component {
     renderQuotes() {
@@ -32,6 +32,7 @@ class Results extends Component {
                                 <tr key={ index }>
                                     <td>{ quote.address }</td>
                                     <td>{ quote.isInZone.toString() }</td>
+                                    <td>{ quote.zoneName.toString() }</td>
                                 </tr>
                             );
                         })}

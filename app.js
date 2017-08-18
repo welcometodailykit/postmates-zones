@@ -57,12 +57,7 @@ app.get('/bulk', function (req, res) {
   res.render('bulk');
 });
 
-app.get('/bulk', function (req, res) {
-  res.render('bulk');
-});
-
 app.get('/zones', function(req, res) {
-
   const options = {}
   options.url = 'https://api.postmates.com/v1/delivery_zones';
   options.headers = {
@@ -76,11 +71,9 @@ app.get('/zones', function(req, res) {
     }
   }
   request(options, callback);
-
 });
 
 app.get('/zips', function(req, res) {
-
   const base_url = 'https://vanitysoft-boundaries-io-v1.p.mashape.com/reaperfire/rest/v1/public/boundary';
   const query_params = '?includepostal=true&limit=1&zipcode=';
   const zip = req.query.zip;
@@ -94,16 +87,19 @@ app.get('/zips', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       const info = JSON.parse(body);
+      console.log(`Successful response: ${JSON.stringify(info)}`);
       res.json(info);
     }
   }
   request(options, callback);
-
 });
 
 function getZonePolygons(zones) {
     return zones.map((zone) => {
-        return turf.polygon(zone.features[0].geometry.coordinates[0]);
+        return {
+            coords: turf.polygon(zone.features[0].geometry.coordinates[0]),
+            zone: zone.properties.zone_name
+        };
     });
 }
 
@@ -129,13 +125,26 @@ function isAddressInZone(address) {
 function isCoordinateInZone(coords) {
     const polygons = getZonePolygons(zones);
     const [ lat, lng ] = coords.split(',');
+    let zoneName;
 
     return new Promise((resolve, _reject) => {
         const point = turf.point([parseFloat(lng), parseFloat(lat)]);
-        const pointInPolygon = polygons.some((polygon) =>
-            turf.inside(point, polygon));
+        const pointInPolygon = polygons.some((polygon) => {
+            return turf.inside(point, polygon['coords']);
+        });
 
-        resolve(pointInPolygon);
+        if (pointInPolygon) {
+            zoneName = polygons.find((polygon) => {
+                return turf.inside(point, polygon['coords']);
+            })['zone'];
+        } else {
+            zoneName = ''
+        }
+
+        resolve({
+            pointInPolygon,
+            zoneName
+        });
     });
 }
 

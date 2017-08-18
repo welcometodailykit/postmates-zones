@@ -39,7 +39,8 @@ function formatResponse(names, values) {
     for (var i = 0; i < names.length; i++) {
         var obj = {
             address: names[i],
-            isInZone: values[i]
+            isInZone: values[i]['pointInPolygon'],
+            zoneName: values[i]['zoneName']
         };
         result.push(obj);
     }
