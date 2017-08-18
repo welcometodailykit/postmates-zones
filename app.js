@@ -87,6 +87,7 @@ app.get('/zips', function(req, res) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       const info = JSON.parse(body);
+      console.log(`Successful response: ${JSON.stringify(info)}`);
       res.json(info);
     }
   }
