@@ -48,6 +48,14 @@ app.post('/addresses', function(req, res) {
   }
 });
 
+app.use((req, res, next) => {
+    if ('/robots.txt' == req.url) {
+        res.type('text/plain')
+        res.send("User-agent: *\nDisallow: /");
+    } else {
+        next();
+    }
+})
 
 app.get('/', function (req, res) {
   res.render('index');
